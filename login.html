@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Just Walk & Go - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f9f9fb, #ffffff);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Poppins", sans-serif;
+    }
+    .auth-container {
+      max-width: 420px;
+      width: 100%;
+    }
+    .auth-box {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      padding: 2rem;
+    }
+    .tab-buttons {
+      display: flex;
+      border-radius: 999px;
+      background: #f3f3f3;
+      padding: 4px;
+      margin-bottom: 1rem;
+    }
+    .tab-buttons button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.5rem;
+      border-radius: 999px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .tab-buttons button.active {
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .form-control:focus {
+      border-color: #1e3a8a;
+      box-shadow: 0 0 0 0.1rem rgba(30,58,138,0.25);
+    }
+    .btn-primary {
+      background-color: #111;
+      border: none;
+      border-radius: 8px;
+    }
+    .btn-primary:hover, .btn-primary:focus {
+        background-color: #333;
+    }
+    .btn-outline-secondary {
+      border-radius: 8px;
+    }
+    .demo-text {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+    }
+    .input-group-text {
+      background: transparent;
+      border-right: none;
+    }
+    .form-control {
+      border-left: none;
+      padding-left: 0;
+    }
+    .toggle-password {
+      cursor: pointer;
+    }
+    /* New styles for footer navigation */
+    .footer-nav a {
+        color: #6c757d; /* Bootstrap's text-muted color */
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .footer-nav a:hover {
+      color: #111 !important;
+      text-decoration: underline !important;
+    }
+    /* Style for the custom alert modal */
+    .modal-content {
+        border-radius: 10px;
+        border: none;
+    }
+    .modal-footer {
+        border-top: none;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="auth-container text-center">
+    <div class="mb-3">
+      <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" alt="Book Icon" width="50">
+    </div>
+    <h4 class="fw-semibold">Just Walk & Go</h4>
+    <p class="text-muted">Your digital gateway to endless stories</p>
+
+    <div class="auth-box mx-auto mt-4">
+      <div class="tab-buttons mb-3">
+        <button id="loginTab" class="active" onclick="showForm('login')">Login</button>
+        <button id="signupTab" onclick="showForm('signup')">Sign Up</button>
+      </div>
+
+      <form id="loginForm">
+        <p class="text-muted mb-3">Enter your credentials to access your library</p>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" name="email" placeholder="your.email@example.com" required>
+        </div>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control" name="password" id="loginPassword" placeholder="Enter your password" required>
+          <span class="input-group-text toggle-password" onclick="togglePassword('loginPassword', this)">
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
+
+        <div class="d-flex justify-content-end mb-3">
+          <a href="#" class="text-decoration-none small text-muted">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+
+        <div class="text-center text-muted my-2">OR</div>
+
+        <button type="button" class="btn btn-outline-secondary w-100" onclick="loginAsDemo()">
+          <i class="bi bi-person-check"></i> Try Demo Account
+        </button>
+      </form>
+
+      <form id="signupForm" style="display:none;">
+        <p class="text-muted mb-3">Create an account to start your reading journey</p>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-person"></i></span>
+          <input type="text" class="form-control" name="name" placeholder="John Doe" required>
+        </div>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" name="email" placeholder="your.email@example.com" required>
+        </div>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control" name="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" required>
+          <span class="input-group-text toggle-password" onclick="togglePassword('signupPassword', this)">
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" required>
+          <span class="input-group-text toggle-password" onclick="togglePassword('confirmPassword', this)">
+            <i class="bi bi-eye"></i>
+          </span>
+        </div>
+
+        <p class="small text-muted">
+          By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+
+        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+      </form>
+    </div>
+
+    <div class="demo-text">
+      Demo credentials: demo@bookstore.com / demo123
+    </div>
+
+    <!-- NEW: Footer Navigation Links -->
+    <div class="footer-nav mt-4">
+      <a href="C:\Users\LaptopAid\Downloads\bookstore management\home.html" class="small mx-2">Home</a>
+      <a href="C:\Users\LaptopAid\Downloads\bookstore management\catalog.html" class="small mx-2">Catalog</a>
+      <a href="C:\Users\LaptopAid\Downloads\bookstore management\catagories.html" class="small mx-2">Categories</a>
+      <a href="#" class="small mx-2">About</a>
+    </div>
+
+  </div>
+
+  <!-- NEW: Custom Alert Modal (Bootstrap) -->
+  <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow-lg">
+        <div class="modal-body text-center py-4 px-4">
+          <p id="alertMessage" class="mb-0 fs-6"></p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW: Bootstrap JS Bundle (must be at end of body) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- Bootstrap Modal Setup ---
+    let alertModal;
+    let alertMessageEl;
+
+    // --- UTILITY FUNCTIONS (NO CHANGE) ---
+    function showForm(type) {
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      if (type === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupForm.style.display = 'block';
+        loginForm.style.display = 'none';
+      }
+    }
+
+    function togglePassword(id, element) {
+      const input = document.getElementById(id);
+      const icon = element.querySelector('i');
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
+      } else {
+        input.type = "password";
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+      }
+    }
+
+    // --- NEW: CUSTOM ALERT FUNCTION (replaces alert()) ---
+    function customAlert(message) {
+      if (!alertModal) {
+        // Initialize modal instance on first use
+        alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        alertMessageEl = document.getElementById('alertMessage');
+      }
+      alertMessageEl.textContent = message;
+      alertModal.show();
+    }
+
+
+    // --- UPDATED: AUTHENTICATION LOGIC ---
+
+    // Wait for the DOM to be fully loaded before running scripts
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      // Pre-initialize modal elements
+      if (!alertModal) {
+        alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+        alertMessageEl = document.getElementById('alertMessage');
+      }
+
+      // Handle the Sign Up form submission
+      signupForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent page reload
+
+        const name = signupForm.querySelector('input[name="name"]').value.trim();
+        const email = signupForm.querySelector('input[name="email"]').value.trim();
+        const password = signupForm.querySelector('input[name="password"]').value.trim();
+        const confirmPassword = signupForm.querySelector('input[name="confirmPassword"]').value.trim();
+
+        // --- Validation ---
+        if (!name || !email || !password || !confirmPassword) {
+          customAlert('❌ Please fill in all fields.');
+          return;
+        }
+        if (password.length < 6) {
+          customAlert('❌ Password must be at least 6 characters long.');
+          return;
+        }
+        if (password !== confirmPassword) {
+          customAlert("❌ Passwords do not match.");
+          return;
+        }
+
+        // Get existing users from localStorage, or initialize an empty array
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Check if the user already exists
+        const userExists = users.some(user => user.email === email);
+        if (userExists) {
+          customAlert("❌ An account with this email already exists.");
+          return;
+        }
+
+        // Add the new user to the array
+        users.push({ name, email, password });
+
+        // Save the updated users array back to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+
+        customAlert("✅ Sign up successful! You can now log in.");
+        signupForm.reset(); // Clear the form
+        showForm('login');  // Switch to the login tab
+      });
+
+
+      // Handle the Login form submission
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent page reload
+
+        const email = loginForm.querySelector('input[name="email"]').value.trim();
+        const password = loginForm.querySelector('input[name="password"]').value.trim();
+        
+        if (!email || !password) {
+          customAlert('❌ Please enter both email and password.');
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Find the user with the matching email and password
+        const user = users.find(u => u.email === email && u.password === password);
+
+        if (user) {
+          customAlert(`✅ Welcome back, ${user.name}! Redirecting...`);
+          // Redirect to your main page after a short delay
+          setTimeout(() => {
+            window.location.href = "index.html"; // Change this to your main page
+          }, 1500); // 1.5 second delay
+        } else {
+          customAlert("❌ Invalid email or password. Please try again.");
+        }
+      });
+    });
+
+    // Handle the Demo Account button
+    function loginAsDemo() {
+      // For this demo, we just redirect. 
+      // A real app would set a demo session token.
+      customAlert("✅ Logging in as Demo User! Redirecting...");
+      
+      // Redirect to your main page after a short delay
+      setTimeout(() => {
+        window.location.href = "index.html"; // Change this to your main page
+      }, 1500); // 1.5 second delay
+    }
+
+  </script>
+
+</body>
+</html>

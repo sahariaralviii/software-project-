@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Walk & Go BookStore - Home</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <style>
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; 
+        }
+        
+        #qr-reader video {
+            width: 100% !important;
+            height: auto !important;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        /* Custom scrollbar for cart items */
+        #cartItemsList::-webkit-scrollbar {
+            width: 6px;
+        }
+        #cartItemsList::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #cartItemsList::-webkit-scrollbar-thumb {
+            background: #a8a8a8;
+            border-radius: 10px;
+        }
+        #cartItemsList::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- 1. Header (Navbar) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2">
+                <i class="bi bi-book-half text-2xl text-blue-600"></i>
+                <div>
+                    <span class="text-xl font-bold text-gray-800 block leading-tight">Walk & Go</span>
+                    <span class="text-xs text-gray-500 block leading-tight">BookStore</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links (Fixed local C: drive link) -->
+            <div class="hidden md:flex items-center gap-6">
+                <a href="index.html" class="text-gray-900 font-semibold">Home</a>
+                <a href="catalog.html" class="text-gray-600 hover:text-gray-900">Catalog</a>
+                <a href="categories.html" class="text-gray-600 hover:text-gray-900">Categories</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <button class="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100">
+                    <i class="bi bi-search text-lg"></i>
+                </button>
+                <button class="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 font-semibold text-sm">
+                    DE
+                </button>
+                <span id="userNameDisplay" class="hidden lg:block text-sm font-medium text-gray-700">Demo User</span>
+                
+                <button id="openScannerBtn" class="flex items-center gap-2 text-gray-700 hover:text-blue-600">
+                    <i class="bi bi-qr-code-scan text-xl"></i>
+                    <span class="hidden lg:block text-sm font-medium">Scan</span>
+                </button>
+                
+                <!-- Cart Button -->
+                <button id="cartBtn" class="relative flex items-center gap-2 text-gray-700 hover:text-blue-600">
+                    <i class="bi bi-cart text-xl"></i>
+                    <span class="hidden lg:block text-sm font-medium">Cart</span>
+                    <!-- Cart Count Badge -->
+                    <span id="cartCountBadge" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">
+                        0
+                    </span>
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100">
+                    <i class="bi bi-list text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 2. Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section class="bg-white py-20 md:py-32">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    Discover Your Next Great Read
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+                    Browse thousands of books, scan QR codes for instant access, and build your personal library.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="openScannerBtnHero" class="bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center justify-center gap-2 transition hover:bg-gray-700">
+                        <i class="bi bi-qr-code-scan text-lg"></i>
+                        <span>Scan QR Code</span>
+                    </button>
+                    <a href="catalog.html" class="bg-white text-gray-900 font-semibold py-3 px-6 rounded-lg border border-gray-300 inline-flex items-center justify-center gap-2 transition hover:bg-gray-50">
+                        <span>Browse Catalog</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="flex items-center justify-center gap-4">
+                        <i class="bi bi-book text-4xl text-blue-600"></i>
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">26+</span>
+                            <p class="text-gray-600">Books Available</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-4">
+                        <i class="bi bi-people text-4xl text-blue-600"></i>
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">50,000+</span>
+                            <p class="text-gray-600">Happy Readers</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-4">
+                        <i class="bi bi-star text-4xl text-blue-600"></i>
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">4.8</span>
+                            <p class="text-gray-600">Average Rating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Categories Section -->
+        <section class="py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Popular Categories</h2>
+                <p class="text-lg text-gray-600 mb-10">Explore books by genre</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="catalog.html" class="bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-full transition hover:bg-gray-200">
+                        Classic Literature
+                    </a>
+                    <a href="catalog.html" class="bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-full transition hover:bg-gray-200">
+                        Contemporary Fiction
+                    </a>
+                    <a href="catalog.html" class="bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-full transition hover:bg-gray-200">
+                        Science Fiction
+                    </a>
+                    <a href="catalog.html" class="bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-full transition hover:bg-gray-200">
+                        Self-Help
+                    </a>
+                    <a href="catalog.html" class="bg-gray-100 text-gray-800 font-semibold py-3 px-6 rounded-full transition hover:bg-gray-200">
+                        Bangla Literature
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 3. Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="container mx-auto px-4 py-16 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <i class="bi bi-book-half text-3xl text-blue-600"></i>
+                <span class="text-2xl font-bold text-gray-800">Just Walk & Go BookStore</span>
+            </div>
+            <p class="text-gray-600 max-w-xl mx-auto mb-6">
+                Your digital gateway to endless stories and knowledge from around the world.
+            </p>
+            <div class="flex justify-center gap-6">
+                <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">About</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">Contact</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">Privacy</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    
+    <!-- ================================== -->
+    <!--            Modals                  -->
+    <!-- ================================== -->
+
+    <!-- 1. QR Scanner Modal -->
+    <div id="scannerModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
+            <h3 class="text-xl font-semibold mb-4">Scan Book QR Code</h3>
+            <button id="closeScannerBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-2xl leading-none">
+                &times;
+            </button>
+            <div id="qr-reader" class="w-full"></div>
+            <p id="qr-scan-result" class="text-center text-gray-600 mt-4"></p>
+        </div>
+    </div>
+
+    
+    <!-- 2. Book Details Modal -->
+    <div id="bookModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
+            <button id="closeBookModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-2xl leading-none">
+                &times;
+            </button>
+            <div class="md:flex gap-6">
+                <div class="md:w-1/3">
+                    <img src="https://placehold.co/400x600/eee/ccc?text=Book+Cover" id="modalBookImage" class="w-full h-auto object-cover rounded-lg shadow-md" alt="Book Cover">
+                </div>
+                <div class="md:w-2/3 mt-6 md:mt-0">
+                    <h2 id="modalBookTitle" class="text-3xl font-bold mb-2">Book Title</h2>
+                    <h3 id="modalBookAuthor" class="text-xl text-gray-600 mb-3">Author Name</h3>
+                    <div class="flex items-center mb-4">
+                        <span id="modalBookRating" class="text-yellow-500 text-lg"></span>
+                        <span id="modalBookReviews" class="text-sm text-gray-500 ml-2">(0 reviews)</span>
+                    </div>
+                    <span id="modalBookCategory" class="text-sm font-medium bg-blue-100 text-blue-800 px-3 py-1 rounded-full mb-4 inline-block">Category</span>
+                    <p id="modalBookDescription" class="text-gray-700 mb-6">
+                        Book description will load here.
+                    </p>
+                    <div class="mb-6">
+                        <span id="modalBookPriceNew" class="text-3xl font-bold text-pink-600">$0.00</span>
+                        <span id="modalBookPriceOld" class="text-lg text-gray-500 line-through ml-2 hidden">$0.00</span>
+                    </div>
+                    <button id="modalAddToCartButton" class="w-full bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center justify-center gap-2 transition hover:bg-gray-700">
+                        <i class="bi bi-cart-plus text-lg"></i>
+                        <span>Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- 3. Custom Alert Modal -->
+    <div id="alertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-sm text-center">
+            <p id="alertMessage" class="text-gray-700 mb-4">This is an alert message.</p>
+            <button id="closeAlertBtn" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition hover:bg-blue-700">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg relative max-h-[90vh] flex flex-col">
+            <h3 class="text-2xl font-semibold mb-6">Your Cart</h3>
+            <button id="closeCartBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-2xl leading-none">
+                &times;
+            </button>
+            
+            <!-- Cart Items List -->
+            <div id="cartItemsList" class="flex-grow overflow-y-auto mb-4 divide-y divide-gray-200 pr-2">
+                <!-- Cart items will be dynamically inserted here -->
+                <p id="emptyCartMsg" class="text-gray-500 text-center py-4">Your cart is empty.</p>
+            </div>
+
+            <!-- Cart Total -->
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xl font-semibold text-gray-800">Total:</span>
+                    <span id="cartTotal" class="text-2xl font-bold text-blue-600">$0.00</span>
+                </div>
+                <div class="flex justify-between gap-4">
+                    <button id="clearCartBtn" class="w-1/2 bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition hover:bg-red-700 disabled:opacity-50" disabled>
+                        Clear Cart
+                    </button>
+                    <button id="checkoutBtn" class="w-1/2 bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg transition hover:bg-gray-700 disabled:opacity-50" disabled>
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================================== -->
+    <!--          COMPLETE SCRIPT           -->
+    <!-- ================================== -->
+    <script>
+        
+        // --- CART PERSISTENCE ---
+        const CART_STORAGE_KEY = 'bookstore_cart';
+
+        function getCartFromStorage() {
+            // Get cart from localStorage or return an empty array
+            return JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+        }
+
+        function saveCartToStorage() {
+            // Save the current cart array to localStorage
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+        }
+        
+        // --- ALL BOOK DATA ---
+        const allBooks = [
+            { _id: '1', title: 'To Kill a Mockingbird', author: 'Harper Lee', category: 'Classic Literature', rating: 4.8, reviews: 2847, price: 12.99, oldPrice: 15.99, discount: 19, image: 'https://i.ibb.co/bF07q0T/Screenshot-2025-10-31-222401.jpg', description: "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice." },
+            { _id: '2', title: 'The Seven Husbands of Evelyn Hugo', author: 'Taylor Jenkins Reid', category: 'Contemporary Fiction', rating: 4.9, reviews: 4521, price: 16.99, oldPrice: 19.99, discount: 15, image: 'https://i.ibb.co/3k5fchK/Screenshot-2025-10-31-222457.jpg', description: "A mesmerizing novel about the life of a reclusive Hollywood icon who finally tells her story to a young journalist." },
+            { _id: '3', title: 'Dune', author: 'Frank Herbert', category: 'Science Fiction', rating: 4.7, reviews: 3284, price: 18.99, oldPrice: null, discount: 0, image: 'https://i.ibb.co/xL3N04n/Screenshot-2025-10-31-222513.jpg', description: "Set on the desert planet Arrakis, this epic tale follows young Paul Atreides as he navigates political intrigue and mystical powers." },
+            { _id: '4', title: 'Atomic Habits', author: 'James Clear', category: 'Self-Help', rating: 4.8, reviews: 5672, price: 14.99, oldPrice: 17.99, discount: 17, image: 'https://i.ibb.co/vY32C0Q/Screenshot-2025-10-31-222533.jpg', description: "A comprehensive guide to building good habits and breaking bad ones through tiny changes that lead to remarkable results." },
+            { _id: '5', title: 'The Midnight Library', author: 'Matt Haig', category: 'Contemporary Fiction', rating: 4.6, reviews: 2891, price: 13.99, oldPrice: null, discount: 0, image: 'https://i.ibb.co/xHVvXm3/Screenshot-2025-10-31-222549.jpg', description: "Between life and death there is a library, where each book represents a different life you could have lived." },
+            { _id: '6', title: '1984', author: 'George Orwell', category: 'Classic Literature', rating: 4.7, reviews: 4156, price: 11.99, oldPrice: null, discount: 0, image: 'https://i.ibb.co/c18P10G/Screenshot-2025-10-31-222600.jpg', description: "A dystopian masterpiece that explores themes of totalitarianism, surveillance, and the manipulation of truth." },
+            { _id: '7', title: 'গোরা (Gora)', author: 'রবীন্দ্রনাথ ঠাকুর (Rabindranath Tagore)', category: 'Bangla Literature', rating: 4.9, reviews: 1523, price: 8.99, oldPrice: 10.99, discount: 18, image: 'https://i.ibb.co/L5T6Tz4/Screenshot-2025-10-31-222616.jpg', description: "রবীন্দ্রনাথ ঠাকুরের একটি অসাধারণ উপন্যাস যা জাতীয়তাবাদ, ধর্ম এবং মানবিক সম্পর্কের জটিলতা নিয়ে আলোচনা করে। A masterpiece exploring nationalism, religion, and human relationships in colonial Bengal." },
+            { _id: '8', title: 'পদ্মা নদীর মাঝি (Padma Nadir Majhi)', author: 'মানিক বন্দ্যোপাধ্যায় (Manik Bandopadhyay)', category: 'Bangla Literature', rating: 4.7, reviews: 956, price: 7.50, oldPrice: null, discount: 0, image: 'https://i.ibb.co/xJgC04T/Screenshot-2025-10-31-222632.jpg', description: "পদ্মা নদীর তীরের জেলেদের জীবন সংগ্রামের কাহিনী। মানিক বন্দ্যোপাধ্যায়ের এই কালজয়ী উপন্যাসটি বাংলা সাহিত্যের এক অমূল্য সম্পদ। A timeless tale of fishermen's struggles along the Padma River." },
+            { _id: '9', title: 'লালসালু (Lalsalu)', author: 'সৈয়দ ওয়ালীউল্লাহ (Syed Waliullah)', category: 'Bangla Literature', rating: 4.6, reviews: 734, price: 6.99, oldPrice: null, discount: 0, image: 'https://i.ibb.co/FwVpGvY/Screenshot-2025-10-31-222649.jpg', description: "গ্রামীণ বাংলার ধর্মীয় কুসংস্কার এবং সমাজের অন্ধকার দিকগুলো তুলে ধরা একটি শক্তিশালী উপন্যাস। A powerful novel exposing religious superstitions and social darkness in rural Bengal." },
+            { _id: '10', title: "হুমায়ূন আহমেদের গল্প সংকলন (Humayun Ahmed's Short Stories)", author: 'হুমায়ূন আহমেদ (Humayun Ahmed)', category: 'Bangla Literature', rating: 4.8, reviews: 2156, price: 9.99, oldPrice: 12.99, discount: 23, image: 'https://i.ibb.co/Yy5P5cW/Screenshot-2025-10-31-222703.jpg', description: "আধুনিক বাংলা সাহিত্যের অন্যতম জনপ্রিয় লেখক হুমায়ূন আহমেদের নির্বাচিত গল্প সংকলন। মধ্যবিত্ত জীবনের আনন্দ-বেদনার অসাধারণ চিত্রায়ণ। A collection of beloved stories capturing middle-class life in Bangladesh." },
+            { _id: '11', title: 'অপরাজেয় বাংলা (Aparajey Bangla)', author: 'শহীদুল জহির (Shahidul Zahir)', category: 'Bangla Literature', rating: 4.5, reviews: 612, price: 8.50, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-17228T/Screenshot-2025-10-31-222401.jpg', description: "A gripping, heart-wrenching, and wholly remarkable tale of coming-of-age in a South poisoned by virulent prejudice." },
+            { _id: '12', title: 'চাঁদের পাহাড় (Chander Pahar)', author: 'বিভূতিভূষণ বন্দ্যোপাধ্যায় (Bibhutibhushan Bandyopadhyay)', category: 'Bangla Literature', rating: 4.8, reviews: 1842, price: 7.99, oldPrice: 9.99, discount: 20, image: 'https://images.unsplash.com/photo-1755357862944-90931d405e20?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYWR2ZW50dXJlfGVufDF8fHx8MTc2MTkyNzk3Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "রোমাঞ্চকর অভিযান ও সাহসিকতার গল্প। আফ্রিকার পটভূমিতে রচিত এই অবিস্মরণীয় উপন্যাস। An epic adventure story set in the African wilderness, filled with courage and exploration." },
+            { _id: '13', title: 'কবি (Kobi)', author: 'তারাশঙ্কর বন্দ্যোপাধ্যায় (Tarashankar Bandyopadhyay)', category: 'Bangla Literature', rating: 4.6, reviews: 923, price: 6.50, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1542550826-15ab433fc407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb2V0JTIwd3JpdGluZ3xlbnwxfHx8fDE3NjE5Mjc5NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "একজন গ্রামীণ কবির জীবন সংগ্রাম ও শিল্পচেতনার অপূর্ব কাহিনী। The poignant story of a rural poet's struggle and artistic consciousness." },
+            { _id: '14', title: "রবীন্দ্রনাথের কবিতা সংগ্রহ (Rabindranath's Poetry Collection)", author: 'রবীন্দ্রনাথ ঠাকুর (Rabindranath Tagore)', category: 'Bangla Literature', rating: 4.9, reviews: 3456, price: 11.99, oldPrice: 14.99, discount: 20, image: 'https://images.unsplash.com/photo-1649682303298-24017e5dedb4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0YWdvcmUlMjBwb2V0cnl8ZW58MXx8fHwxNzYxOTI3OTczfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "বিশ্বকবি রবীন্দ্রনাথ ঠাকুরের অমর কবিতাসমূহের নির্বাচিত সংকলন। গীতাঞ্জলি, সোনার তরী সহ বিখ্যাত কবিতাগুলো। Selected collection of immortal poems by the world poet, including Gitanjali and Sonar Tari." },
+            { _id: '15', title: 'বনলতা সেন (Banalata Sen)', author: 'জীবনানন্দ দাশ (Jibanananda Das)', category: 'Bangla Literature', rating: 4.7, reviews: 1567, price: 5.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1602793778401-d5ddab8febd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZW5nYWxpJTIwbmF0dXJlfGVufDF8fHx8MTc2MTkyNzk3M3ww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "আধুনিক বাংলা কবিতার অন্যতম শ্রেষ্ঠ কবি জীবনানন্দ দাশের বিখ্যাত কবিতা সংকলন। রূপসী বাংলার অনুপম বর্ণনা। Famous poetry collection by one of the greatest modern Bengali poets, depicting the beauty of Bengal." },
+            { _id: '16', title: 'আরণ্যক (Aranyak)', author: 'বিভূতিভূষণ বন্দ্যোপাধ্যায় (Bibhutibhushan Bandyopadhyay)', category: 'Bangla Literature', rating: 4.8, reviews: 1234, price: 8.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1702411995197-7852206e92f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB3aWxkZXJuZXNzfGVufDF8fHx8MTc2MTkyNzk3NHww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "বিহারের জঙ্গলে একজন যুবকের জীবনযাত্রা ও প্রকৃতি প্রেমের অনুপম কাহিনী। A beautiful tale of a young man's life in the forests of Bihar and his love for nature." },
+            { _id: '17', title: 'Foundation', author: 'Isaac Asimov', category: 'Science Fiction', rating: 4.6, reviews: 8974, price: 15.99, oldPrice: 18.99, discount: 16, image: 'https://images.unsplash.com/photo-1658999194718-c59895703e2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYWxhY3RpYyUyMGVtcGlyZXxlbnwxfHx8fDE3NjE5Mjc5NzR8MA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "The epic saga of humanity's galactic empire. Hari Seldon's psychohistory predicts the fall of the Empire and the coming Dark Age." },
+            { _id: '18', title: 'Neuromancer', author: 'William Gibson', category: 'Science Fiction', rating: 4.5, reviews: 5632, price: 14.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1741795990583-d4115c018da2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwbWF0cml4fGVufDF8fHx8MTc2MTg4MTQzMXww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "The novel that launched the cyberpunk genre. Enter the matrix of cyberspace where AI and human consciousness collide." },
+            { _id: '19', title: 'The Left Hand of Darkness', author: 'Ursula K. Le Guin', category: 'Science Fiction', rating: 4.7, reviews: 4821, price: 13.99, oldPrice: 16.99, discount: 18, image: 'https://images.unsplash.com/photo-1655509206649-a63396bed840?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbGllbiUyMHBsYW5ldHxlbnwxfHx8fDE3NjE5Mjc5NzV8MA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "A groundbreaking exploration of gender and society on the alien world of Gethen. Winner of Hugo and Nebula Awards." },
+            { _id: '20', title: 'Hyperion', author: 'Dan Simmons', category: 'Science Fiction', rating: 4.8, reviews: 6543, price: 16.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1703925155012-ad6ed0f1624e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGFjZSUyMG9wZXJhfGVufDF8fHx8MTc2MTkyNzk3NXww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "Seven pilgrims journey to the mysterious world of Hyperion, each carrying their own dark secrets and desperate hopes." },
+            { _id: '21', title: "Ender's Game", author: 'Orson Scott Card', category: 'Science Fiction', rating: 4.6, reviews: 12547, price: 12.99, oldPrice: 15.99, discount: 19, image: 'https://images.unsplash.com/photo-1577594948710-b232c7d9c456?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGFjZSUyMGJhdHRsZXxlbnwxfHx8fDE3NjE5Mjc5NzV8MA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "Brilliant children are trained to fight in Earth's war against alien invaders. A coming-of-age story in space." },
+            { _id: '22', title: 'The Martian', author: 'Andy Weir', category: 'Science Fiction', rating: 4.7, reviews: 9876, price: 14.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1603031532585-34192bc4489f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXJzJTIwYXN0cm9uYXV0fGVufDF8fHx8MTc2MTkyNzk3Nnww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "Stranded on Mars, an astronaut must use his ingenuity to survive and signal Earth for rescue. Hard science fiction at its best." },
+            { _id: '23', title: 'Pride and Prejudice', author: 'Jane Austen', category: 'Classic Literature', rating: 4.6, reviews: 15234, price: 9.99, oldPrice: 12.99, discount: 23, image: 'https://images.unsplash.com/photo-1589200412802-8a0fc9ce8875?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZWdlbmN5JTIwZW5nbGFuZHxlbnwxfHx8fDE3NjE5Mjc5Nzd8MA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "A witty and romantic novel about Elizabeth Bennet and Mr. Darcy. A timeless exploration of love, class, and social expectations." },
+            { _id: '24', title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', category: 'Classic Literature', rating: 4.4, reviews: 11867, price: 10.99, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1611416630403-545aab48d81e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYXp6JTIwYWdlfGVufDF8fHx8MTc2MTkyNzk3N3ww&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "The quintessential American novel about the Jazz Age, the American Dream, and the tragic Jay Gatsby." },
+            { _id: '25', title: 'Jane Eyre', author: 'Charlotte Brontë', category: 'Classic Literature', rating: 4.5, reviews: 8934, price: 11.99, oldPrice: 14.99, discount: 20, image: 'https://images.unsplash.com/photo-1650787846803-6e3ec8778f15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aWN0b3JpYW4lMjBnb3RoaWN8ZW58MXx8fHwxNzYxOTI3OTc3fDA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "The story of an orphaned governess who faces hardship and finds love. A powerful tale of independence and moral strength." },
+            { _id: '26', title: 'Wuthering Heights', author: 'Emily Brontë', category: 'Classic Literature', rating: 4.3, reviews: 7234, price: 10.50, oldPrice: null, discount: 0, image: 'https://images.unsplash.com/photo-1630075362810-5940a3d2fa79?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbmdsaXNoJTIwbW9vcnN8ZW58MXx8fHwxNzYxOTI3OTc3fDA&ixlib.rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', description: "A dark and passionate tale of love and revenge set on the Yorkshire moors. The tumultuous relationship between Heathcliff and Catherine." }
+        ];
+
+        let html5QrCode; 
+        let cart = getCartFromStorage(); // <-- MODIFIED: Load cart from storage
+        let currentBookForModal = null; // To hold the book object for the 'Add to Cart' button
+
+        // --- DOM Elements ---
+        const scannerModal = document.getElementById('scannerModal');
+        const bookModal = document.getElementById('bookModal');
+        const alertModal = document.getElementById('alertModal');
+        const cartModal = document.getElementById('cartModal');
+        
+        const openScannerBtn = document.getElementById('openScannerBtn');
+        const openScannerBtnHero = document.getElementById('openScannerBtnHero');
+        const cartBtn = document.getElementById('cartBtn');
+        
+        const closeScannerBtn = document.getElementById('closeScannerBtn');
+        const closeBookModalBtn = document.getElementById('closeBookModalBtn');
+        const closeAlertBtn = document.getElementById('closeAlertBtn');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        
+        const qrScanResult = document.getElementById('qr-scan-result');
+        const cartCountBadge = document.getElementById('cartCountBadge');
+        const cartItemsList = document.getElementById('cartItemsList');
+        const cartTotal = document.getElementById('cartTotal');
+        const clearCartBtn = document.getElementById('clearCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const emptyCartMsg = document.getElementById('emptyCartMsg');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+
+        // Book Modal Elements
+        const modalBookImage = document.getElementById('modalBookImage');
+        const modalBookTitle = document.getElementById('modalBookTitle');
+        const modalBookAuthor = document.getElementById('modalBookAuthor');
+        const modalBookRating = document.getElementById('modalBookRating');
+        const modalBookReviews = document.getElementById('modalBookReviews');
+        const modalBookCategory = document.getElementById('modalBookCategory');
+        const modalBookDescription = document.getElementById('modalBookDescription');
+        const modalBookPriceNew = document.getElementById('modalBookPriceNew');
+        const modalBookPriceOld = document.getElementById('modalBookPriceOld');
+        const modalAddToCartButton = document.getElementById('modalAddToCartButton');
+
+
+        // --- Custom Alert Function ---
+        function customAlert(message, type = 'info') {
+            document.getElementById('alertMessage').textContent = message;
+            // You could customize the alert color based on type (e.g., 'success', 'error')
+            alertModal.classList.remove('hidden');
+        }
+
+        // --- QR Scanner Functions ---
+        function startScanner() {
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+            scannerModal.classList.remove('hidden');
+            qrScanResult.textContent = 'Scanning...';
+            
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                onScanSuccess,
+                onScanFailure
+            ).catch(err => {
+                console.error("QR Scanner start failed:", err);
+                qrScanResult.textContent = 'Failed to start scanner. Please give camera permission.';
+                customAlert('Error: Could not start camera. Please grant permission.');
+            });
+        }
+
+        function stopScanner() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    console.log("QR Scanner stopped.");
+                }).catch(err => {
+                    console.error("QR Scanner stop failed:", err);
+                });
+            }
+            scannerModal.classList.add('hidden');
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            stopScanner();
+            const book = allBooks.find(b => b._id === decodedText);
+            if (book) {
+                openBookModal(book);
+            } else {
+                customAlert(`Book with ID "${decodedText}" not found in our database.`);
+            }
+        }
+
+        function onScanFailure(error) {
+            // This will fire continuously, so it's best to just log it
+            // console.warn(`QR scan failure: ${error}`);
+            qrScanResult.textContent = 'Scanning... (Align QR code within the box)';
+        }
+
+        // --- Book Modal Functions ---
+        function openBookModal(book) {
+            currentBookForModal = book; // Store the book
+            modalBookImage.src = book.image;
+            modalBookImage.alt = book.title;
+            modalBookTitle.textContent = book.title;
+            modalBookAuthor.textContent = book.author;
+            modalBookRating.innerHTML = generateStarRating(book.rating);
+            modalBookReviews.textContent = `(${book.reviews.toLocaleString()} reviews)`;
+            modalBookCategory.textContent = book.category;
+            modalBookDescription.textContent = book.description;
+            modalBookPriceNew.textContent = `$${book.price.toFixed(2)}`;
+            
+            if (book.oldPrice) {
+                modalBookPriceOld.textContent = `$${book.oldPrice.toFixed(2)}`;
+                modalBookPriceOld.classList.remove('hidden');
+            } else {
+                modalBookPriceOld.classList.add('hidden');
+            }
+            
+            bookModal.classList.remove('hidden');
+        }
+
+        function closeBookModal() {
+            bookModal.classList.add('hidden');
+            currentBookForModal = null; // Clear the stored book
+        }
+
+        function generateStarRating(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="bi bi-star-fill"></i>'; // Full star
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="bi bi-star-half"></i>'; // Half star
+                } else {
+                    stars += '<i class="bi bi-star"></i>'; // Empty star
+                }
+            }
+            return stars;
+        }
+
+        // --- Cart Functions ---
+        function addToCart(book) {
+            if (!book) return;
+
+            const existingItem = cart.find(item => item._id === book._id);
+            
+            if (existingItem) {
+                customAlert('This book is already in your cart.');
+            } else {
+                cart.push({ ...book, quantity: 1 }); // Add book with quantity
+                saveCartToStorage(); // <-- MODIFIED: Save cart to localStorage
+                customAlert('Book added to cart!');
+                updateCartUI();
+            }
+            
+            closeBookModal();
+        }
+
+        function removeFromCart(bookId) {
+            cart = cart.filter(item => item._id !== bookId);
+            saveCartToStorage(); // <-- MODIFIED: Save cart to localStorage
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            saveCartToStorage(); // <-- MODIFIED: Save cart to localStorage
+            updateCartUI();
+            closeCartModal();
+        }
+
+        function updateCartUI() {
+            // Update Badge
+            if (cart.length > 0) {
+                cartCountBadge.textContent = cart.length;
+                cartCountBadge.classList.remove('hidden');
+                emptyCartMsg.classList.add('hidden');
+                clearCartBtn.disabled = false;
+                checkoutBtn.disabled = false;
+            } else {
+                cartCountBadge.classList.add('hidden');
+                emptyCartMsg.classList.remove('hidden');
+                clearCartBtn.disabled = true;
+                checkoutBtn.disabled = true;
+            }
+            
+            // Update Cart Modal List
+            cartItemsList.innerHTML = ''; // Clear list
+            if (cart.length > 0) {
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex items-center justify-between py-4';
+                    itemElement.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded-md">
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${item.title}</h4>
+                                <p class="text-sm text-gray-600">$${item.price.toFixed(2)}</p>
+                            </div>
+                        </div>
+                        <button class="remove-item-btn text-red-500 hover:text-red-700" data-id="${item._id}">
+                            <i class="bi bi-trash-fill text-lg"></i>
+                        </button>
+                    `;
+                    cartItemsList.appendChild(itemElement);
+                });
+            }
+
+            // Add event listeners to new remove buttons
+            document.querySelectorAll('.remove-item-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    removeFromCart(button.dataset.id);
+                });
+            });
+            
+            // Update Total
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        function openCartModal() {
+            updateCartUI(); // Ensure cart is up-to-date when opened
+            cartModal.classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            cartModal.classList.add('hidden');
+        }
+
+        // --- LOGIN STATUS FUNCTION ---
+        function checkLoginStatus() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && loggedInUser.name) {
+                userNameDisplay.textContent = loggedInUser.name;
+            } else {
+                userNameDisplay.textContent = 'Demo User';
+            }
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Check login status on page load
+            checkLoginStatus();
+
+            // Scanner Modals
+            openScannerBtn.addEventListener('click', startScanner);
+            openScannerBtnHero.addEventListener('click', startScanner);
+            closeScannerBtn.addEventListener('click', stopScanner);
+
+            // Book Modal
+            closeBookModalBtn.addEventListener('click', closeBookModal);
+            modalAddToCartButton.addEventListener('click', () => {
+                addToCart(currentBookForModal);
+            });
+
+            // Alert Modal
+            closeAlertBtn.addEventListener('click', () => { // Corrected arrow function
+                alertModal.classList.add('hidden');
+            });
+
+            // Cart Modal
+            cartBtn.addEventListener('click', openCartModal);
+            closeCartBtn.addEventListener('click', closeCartModal);
+            clearCartBtn.addEventListener('click', clearCart);
+
+            // Close modal on background click
+            window.addEventListener('click', (event) => {
+                if (event.target === scannerModal) stopScanner();
+                if (event.target === bookModal) closeBookModal();
+                if (event.target === alertModal) alertModal.classList.add('hidden');
+                if (event.target === cartModal) closeCartModal();
+            });
+
+            // Initial UI update on load (to show stored cart)
+            updateCartUI();
+        });
+
+    </script>
+</body>
+</html>
+

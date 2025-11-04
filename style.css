@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+  }
+  .navbar-brand {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  .navbar-brand img {
+    width: 28px;
+    margin-right: 8px;
+  }
+  .hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+  }
+  .hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+  }
+  .stats div {
+    text-align: center;
+  }
+  .featured-books {
+    padding: 50px 20px;
+    background: #fff;
+  }
+  .book-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+  }
+  .book-card:hover {
+    transform: translateY(-5px);
+  }
+  .discount-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #e63946;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .category-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #457b9d;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .popular-categories {
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .category-btn {
+    margin: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #f3f4f6;
+    cursor: pointer;
+  }
+  .category-btn:hover {
+    background: #1e3a8a;
+    color: #fff;
+  }
